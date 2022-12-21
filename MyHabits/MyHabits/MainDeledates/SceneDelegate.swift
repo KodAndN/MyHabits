@@ -1,0 +1,90 @@
+//
+//  SceneDelegate.swift
+//  MyHabits
+//
+//  Created by Андрей Кодочигов on 19.12.2022.
+//
+
+import UIKit
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    
+    private enum TabBarItemType {
+        case habits
+        case info
+    }
+
+    var window: UIWindow?
+
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        window = UIWindow(windowScene: windowScene)
+        window?.windowScene = windowScene
+        window?.rootViewController = createTabBar()
+        window?.makeKeyAndVisible()
+    }
+    
+    private func createNavigationController(for itemType: TabBarItemType) -> UINavigationController {
+        let viewController: UIViewController
+        let title: String
+        let tabBarItem: UITabBarItem
+        switch itemType {
+        case .habits:
+            viewController = HabitsViewController()
+            title = "Today"
+            tabBarItem = UITabBarItem(title: "Habits", image: UIImage(systemName: "rectangle.grid.1x2.fill"), tag: 0)
+        case .info:
+            viewController = InfoViewController()
+            title = "Info"
+            tabBarItem = UITabBarItem(title: "Info", image: UIImage(systemName: "info.circle.fill"), tag: 1)
+        }
+        viewController.tabBarItem = tabBarItem
+        viewController.title = title
+        return UINavigationController(rootViewController: viewController)
+    }
+
+    private func createTabBar() -> UITabBarController {
+        let tabBar = UITabBarController()
+        UITabBar.appearance().tintColor = .myPurple
+        UITabBar.appearance().backgroundColor = .myWhite
+        tabBar.viewControllers = [
+            self.createNavigationController(for: .habits),
+            self.createNavigationController(for: .info)
+        ]
+        return tabBar
+    }
+    
+    func sceneDidDisconnect(_ scene: UIScene) {
+        // Called as the scene is being released by the system.
+        // This occurs shortly after the scene enters the background, or when its session is discarded.
+        // Release any resources associated with this scene that can be re-created the next time the scene connects.
+        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+    }
+
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        // Called when the scene has moved from an inactive state to an active state.
+        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+    }
+
+    func sceneWillResignActive(_ scene: UIScene) {
+        // Called when the scene will move from an active state to an inactive state.
+        // This may occur due to temporary interruptions (ex. an incoming phone call).
+    }
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        // Called as the scene transitions from the background to the foreground.
+        // Use this method to undo the changes made on entering the background.
+    }
+
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        // Called as the scene transitions from the foreground to the background.
+        // Use this method to save data, release shared resources, and store enough scene-specific state information
+        // to restore the scene back to its current state.
+    }
+
+
+}
+
